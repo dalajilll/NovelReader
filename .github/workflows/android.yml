@@ -19,10 +19,16 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Set up JDK 17
+    - name: Set up JDK 17 (for Android SDK)
       uses: actions/setup-java@v4
       with:
         java-version: '17'
+        distribution: 'temurin'
+
+    - name: Set up JDK 11 (for Gradle compatibility)
+      uses: actions/setup-java@v4
+      with:
+        java-version: '11'
         distribution: 'temurin'
         cache: gradle
 
@@ -32,11 +38,15 @@ jobs:
     - name: Install Gradle
       run: sudo apt update && sudo apt install -y gradle
 
-    - name: Build Debug APK
-      run: gradle assembleDebug --stacktrace
+    - name: Build Debug APK (use JDK 11)
+      run: |
+        export JAVA_HOME=$JAVA_HOME_11_X64
+        gradle assembleDebug --stacktrace
 
-    - name: Build Release APK
-      run: gradle assembleRelease --stacktrace
+    - name: Build Release APK (use JDK 11)
+      run: |
+        export JAVA_HOME=$JAVA_HOME_11_X64
+        gradle assembleRelease --stacktrace
 
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
