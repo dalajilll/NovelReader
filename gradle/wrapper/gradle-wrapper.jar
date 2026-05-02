@@ -1,0 +1,9 @@
+💻 Gradle Wrapper executable
+
+toBase64Binary=
+
+#如果本地没有gradle，可以从网上下载
+# 下载地址：https://gradle.org/next-steps/?version=8.0&format=bin
+
+# 下面是一个空的gradle-wrapper.jar，实际使用时需要下载正确的版本
+# 可以从官方网站下载：https://docs.gradle.org/current/userguide/gradle_wrapper.html

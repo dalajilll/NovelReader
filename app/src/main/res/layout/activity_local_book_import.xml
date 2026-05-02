@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- 标题 -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="导入本地书籍"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="24dp" />
+
+    <!-- 选择文件 -->
+    <Button
+        android:id="@+id/selectFileButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="选择文件 (.txt, .epub)"
+        android:backgroundTint="#4CAF50"
+        android:layout_marginBottom="16dp" />
+
+    <!-- 已选择文件信息 -->
+    <TextView
+        android:id="@+id/selectedFileTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="未选择文件"
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:padding="16dp"
+        android:background="#F5F5F5"
+        android:layout_marginBottom="16dp"
+        android:minLines="3" />
+
+    <!-- 导入按钮 -->
+    <Button
+        android:id="@+id/importButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="开始导入"
+        android:backgroundTint="#2196F3"
+        android:layout_marginBottom="16dp" />
+
+    <!-- 进度条 -->
+    <ProgressBar
+        android:id="@+id/importProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginBottom="16dp" />
+
+    <!-- 操作指南 -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="操作指南:\n\n"
+                + "1. 点击"选择文件"按钮\n"
+                + "2. 在弹出的文件选择器中选择一本小说\n"
+                + "3. 支持 .txt 和 .epub 格式\n"
+                + "4. 点击"开始导入"进行导入\n\n"
+                + "注意:\n"
+                + "-确保文件编码为UTF-8\n"
+                + "-系统会自动识别节\n"
+章                + "导-入后可在"书架"中查看"
+        android:textSize="14sp"
+        android:background="#F0F0F0"
+        android:padding="16dp" />
+
+</LinearLayout>
