@@ -12,8 +12,9 @@ task clean(type: Delete) {
 
 allprojects {
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
         google()
         mavenCentral()
-        gradlePluginPortal()
     }
 }
