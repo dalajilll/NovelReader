@@ -1,26 +1,80 @@
-name: Android CI
+name: Build APK
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main, master ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main, master ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
+    
     steps:
-    - uses: actions/checkout@v4
-    - name: set up JDK 11
-      uses: actions/setup-java@v4
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
       with:
         java-version: '11'
         distribution: 'temurin'
         cache: gradle
-
+    
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v2
+      with:
+        api-level: 33
+        build-tools-version: 33.0.2
+        ndk-version: 25.1.8937393
+    
+    - name: Cache Gradle packages
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+    
     - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
+      run: |
+        cd ${{ github.workspace }}
+        chmod +x gradlew
+    
+    - name: Build Debug APK
+      run: |
+        cd ${{ github.workspace }}
+        ./gradlew assembleDebug --stacktrace
+    
+    - name: Build Release APK
+      run: |
+        cd ${{ github.workspace }}
+        ./gradlew assembleRelease --stacktrace
+    
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v3
+      if: success()
+      with:
+        name: NovelReader-debug.apk
+        path: app/build/outputs/apk/debug/app-debug.apk
+        retention-days: 7
+    
+    - name: Upload Release APK
+      uses: actions/upload-artifact@v3
+      if: success()
+      with:
+        name: NovelReader-release.apk
+        path: app/build/outputs/apk/release/app-release.apk
+        retention-days: 7
+
+    - name: Upload Build Reports
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: build-reports
+        path: app/build/reports/
+        retention-days: 7
