@@ -15,15 +15,20 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v3
-
-      - name: Fix gradlew permissions
-        run: chmod +x ./gradlew
-
-      - name: Install Android SDK (Manual for API 30)
+      - name: Install Android SDK dependencies
         run: |
-          sudo apt update && sudo apt install -y wget unzip lib32stdc++6 lib32z1
+          sudo apt update && sudo apt install -y wget unzip lib32stdc++6 lib32z1 gradle
+
+      - name: Generate fresh Gradle wrapper (completely overwrite existing one)
+        run: |
+          # 强制生成全新的 gradlew 和 wrapper 文件
+          gradle wrapper --gradle-version 7.0 --distribution-type all
+          # 修复换行符和权限
+          sed -i 's/\r$//' ./gradlew
+          chmod +x ./gradlew
+
+      - name: Install Android SDK
+        run: |
           wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -O /tmp/cmdline-tools.zip
           mkdir -p ~/android-sdk/cmdline-tools
           unzip -q /tmp/cmdline-tools.zip -d ~/android-sdk/cmdline-tools
