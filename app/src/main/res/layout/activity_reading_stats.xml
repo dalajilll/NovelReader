@@ -149,7 +149,6 @@
         android:textSize="16sp"
         android:textColor="#888888"
         android:gravity="center"
-        android:italic="true"
         android:layout_marginBottom="24dp" />
 
     <!-- 详细统计列表 -->
