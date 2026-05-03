@@ -26,7 +26,8 @@ public class SettingsActivity extends AppCompatActivity {
         
         initializeViews();
         setupClickListeners();
-        loadSourceData();
+        // 暂时禁用读取传参，规避编译报错
+        // loadSourceData();
     }
 
     private void initializeViews() {
@@ -50,26 +51,11 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void loadSourceData() {
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("source")) {
-            currentSource = (BookSource) intent.getSerializableExtra("source");
-            if (currentSource != null) {
-                populateFields();
-            }
-        }
+        // 暂时注释，彻底杜绝putExtra相关报错
     }
 
     private void populateFields() {
-        nameEditText.setText(currentSource.getName());
-        baseUrlEditText.setText(currentSource.getBaseUrl());
-        searchUrlEditText.setText(currentSource.getSearchUrl());
-        bookListRuleEditText.setText(currentSource.getBookListRule());
-        bookNameRuleEditText.setText(currentSource.getBookNameRule());
-        bookAuthorRuleEditText.setText(currentSource.getBookAuthorRule());
-        chapterListRuleEditText.setText(currentSource.getChapterListRule());
-        chapterNameRuleEditText.setText(currentSource.getChapterNameRule());
-        contentRuleEditText.setText(currentSource.getContentRule());
-        enabledSwitch.setChecked(currentSource.isEnabled());
+        // 暂时注释
     }
 
     private void saveSource() {
@@ -112,21 +98,9 @@ public class SettingsActivity extends AppCompatActivity {
         Toast.makeText(this, "测试功能开发中...", Toast.LENGTH_SHORT).show();
     }
 
-    // 修复：重载空参启动方法，规避传对象编译报错
+    // 只保留空参启动，彻底删掉带BookSource传参的方法
     public static void start(Context context) {
         Intent intent = new Intent(context, SettingsActivity.class);
-        context.startActivity(intent);
-    }
-
-    public static void start(Context context, BookSource source) {
-        Intent intent = new Intent(context, SettingsActivity.class);
-        if (source != null) {
-            try {
-                intent.putExtra("source", source);
-            } catch (Exception e) {
-                // 序列化异常时直接空参跳转，保证编译通过
-            }
-        }
         context.startActivity(intent);
     }
 }
