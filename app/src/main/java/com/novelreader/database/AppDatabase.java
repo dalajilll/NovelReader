@@ -2,10 +2,12 @@ package com.novelreader.database;
 
 import androidx.room.*;
 import androidx.room.OnConflictStrategy;
+import android.content.Context;
+import java.util.Date;
 import java.util.List;
 
 @Entity(tableName = "novels")
-public class NovelEntity {
+class NovelEntity {
     @PrimaryKey
     public int id;
     public String title;
@@ -21,7 +23,7 @@ public class NovelEntity {
 }
 
 @Entity(tableName = "chapters")
-public class ChapterEntity {
+class ChapterEntity {
     @PrimaryKey
     public int id;
     public int novelId;
@@ -32,7 +34,7 @@ public class ChapterEntity {
 }
 
 @Entity(tableName = "bookmarks")
-public class BookmarkEntity {
+class BookmarkEntity {
     @PrimaryKey(autoGenerate = true)
     public int id;
     public int novelId;
@@ -43,7 +45,7 @@ public class BookmarkEntity {
 }
 
 @Entity(tableName = "reading_stats")
-public class ReadingStatsEntity {
+class ReadingStatsEntity {
     @PrimaryKey
     public int novelId;
     public long totalReadingTime;
@@ -53,7 +55,7 @@ public class ReadingStatsEntity {
 }
 
 @Dao
-public interface NovelDao {
+interface NovelDao {
     @Query("SELECT * FROM novels ORDER BY lastReadTime DESC")
     List<NovelEntity> getAllNovels();
     
@@ -77,7 +79,7 @@ public interface NovelDao {
 }
 
 @Dao
-public interface ChapterDao {
+interface ChapterDao {
     @Query("SELECT * FROM chapters WHERE novelId = :novelId ORDER BY chapterIndex")
     List<ChapterEntity> getChaptersByNovel(int novelId);
     
@@ -95,7 +97,7 @@ public interface ChapterDao {
 }
 
 @Dao
-public interface BookmarkDao {
+interface BookmarkDao {
     @Query("SELECT * FROM bookmarks WHERE novelId = :novelId ORDER BY createTime DESC")
     List<BookmarkEntity> getBookmarksByNovel(int novelId);
     
@@ -107,7 +109,7 @@ public interface BookmarkDao {
 }
 
 @Dao
-public interface ReadingStatsDao {
+interface ReadingStatsDao {
     @Query("SELECT * FROM reading_stats WHERE novelId = :novelId")
     ReadingStatsEntity getStatsByNovel(int novelId);
     
@@ -147,7 +149,7 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 }
 
-public class Converters {
+class Converters {
     @TypeConverter
     public static String fromTimestamp(Long value) {
         return value == null ? null : new Date(value).toString();
