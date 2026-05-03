@@ -15,16 +15,19 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      - name: Fix gradlew permissions and line endings
+      - name: Install Gradle and generate wrapper
         run: |
-          # 修复可执行权限
+          # 安装 Gradle
+          sudo apt update && sudo apt install -y gradle
+          # 在项目根目录生成官方的、完整的 gradlew 脚本
+          gradle wrapper --gradle-version 7.0
+          # 强制添加可执行权限并修复换行符
           chmod +x ./gradlew
-          # 把 CRLF 换行符转为 Linux 的 LF
           sed -i 's/\r$//' ./gradlew
 
       - name: Install Android SDK (Manual for API 30)
         run: |
-          sudo apt update && sudo apt install -y wget unzip lib32stdc++6 lib32z1
+          sudo apt install -y wget unzip lib32stdc++6 lib32z1
           wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -O /tmp/cmdline-tools.zip
           mkdir -p ~/android-sdk/cmdline-tools
           unzip -q /tmp/cmdline-tools.zip -d ~/android-sdk/cmdline-tools
