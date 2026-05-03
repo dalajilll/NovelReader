@@ -1,13 +1,15 @@
 package com.novelreader;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.novelreader.database.*;
+import com.novelreader.database.AppDatabase;
 import com.novelreader.model.Novel;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +22,9 @@ public class BookshelfActivity extends AppCompatActivity {
     private NovelAdapter downloadedNovelsAdapter;
     
     private AppDatabase database;
-    private List<NovelEntity> allNovels = new ArrayList<>();
-    private List<NovelEntity> favoriteNovels = new ArrayList<>();
-    private List<NovelEntity> downloadedNovels = new ArrayList<>();
+    private List<AppDatabase.NovelEntity> allNovels = new ArrayList<>();
+    private List<AppDatabase.NovelEntity> favoriteNovels = new ArrayList<>();
+    private List<AppDatabase.NovelEntity> downloadedNovels = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class BookshelfActivity extends AppCompatActivity {
     private void initializeViews() {
         tabHost = findViewById(R.id.tabHost);
         bookshelfRecyclerView = findViewById(R.id.bookshelfRecyclerView);
+        bookshelfRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void initializeDatabase() {
@@ -117,10 +120,11 @@ public class BookshelfActivity extends AppCompatActivity {
         NovelDetailActivity.start(this, novel);
     }
 
-    private List<Novel> convertToNovelList(List<NovelEntity> entities) {
+    private List<Novel> convertToNovelList(List<AppDatabase.NovelEntity> entities) {
         List<Novel> novels = new ArrayList<>();
-        for (NovelEntity entity : entities) {
+        for (AppDatabase.NovelEntity entity : entities) {
             Novel novel = new Novel();
+            novel.setId(entity.id);
             novel.setTitle(entity.title);
             novel.setAuthor(entity.author);
             novel.setDescription(entity.description);
