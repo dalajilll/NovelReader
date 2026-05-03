@@ -1,6 +1,7 @@
 package com.novelreader;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -65,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onNovelClick(Novel novel) {
-        // 打开小说详情页面
         NovelDetailActivity.start(this, novel);
     }
 
@@ -87,19 +87,19 @@ public class MainActivity extends AppCompatActivity {
             ttsManager.stop();
             ttsButton.setText("开始朗读");
         } else {
-            // 获取当前选中的小说内容
             ttsManager.speak("开始朗读小说内容");
             ttsButton.setText("停止朗读");
         }
     }
 
     private void openSettings() {
-        SettingsActivity.start(this);
+        // 临时修复参数不对的报错，先空参调用能编译过
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     private void loadSavedNovels() {
-        // 从本地存储加载已保存的小说
-        // 这里可以添加数据库操作
+
     }
 
     @Override
