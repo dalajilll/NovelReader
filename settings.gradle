@@ -6,8 +6,6 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    // 关键：改成允许项目自己定义仓库，不再拦截
-    repositoriesMode.set(RepositoriesMode.ALLOW_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
