@@ -17,12 +17,16 @@ jobs:
 
       - name: Install Android SDK dependencies
         run: |
-          sudo apt update && sudo apt install -y wget unzip lib32stdc++6 lib32z1 gradle
+          sudo apt update && sudo apt install -y wget unzip lib32stdc++6 lib32z1
 
-      - name: Generate fresh Gradle wrapper (completely overwrite existing one)
+      - name: Download and use compatible Gradle to generate wrapper
         run: |
-          # 强制生成全新的 gradlew 和 wrapper 文件
-          gradle wrapper --gradle-version 7.0 --distribution-type all
+          # 下载和你项目兼容的 Gradle 7.0
+          wget https://services.gradle.org/distributions/gradle-7.0-bin.zip -O /tmp/gradle-7.0-bin.zip
+          unzip -q /tmp/gradle-7.0-bin.zip -d ~/gradle
+          export PATH=$HOME/gradle/gradle-7.0/bin:$PATH
+          # 用 Gradle 7.0 生成 wrapper，兼容 settings.gradle 语法
+          gradle wrapper --gradle-version 7.0
           # 修复换行符和权限
           sed -i 's/\r$//' ./gradlew
           chmod +x ./gradlew
