@@ -17,23 +17,19 @@ jobs:
 
       - name: Install Android SDK (Manual for API 30)
         run: |
-          # 安装基础依赖
           sudo apt update && sudo apt install -y wget unzip lib32stdc++6 lib32z1
-          
-          # 下载兼容 JDK 11 的老版本 command-line-tools
           wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -O /tmp/cmdline-tools.zip
           mkdir -p ~/android-sdk/cmdline-tools
           unzip -q /tmp/cmdline-tools.zip -d ~/android-sdk/cmdline-tools
           mv ~/android-sdk/cmdline-tools/cmdline-tools ~/android-sdk/cmdline-tools/latest
-          
-          # 设置环境变量
           echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
           echo "ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
           echo "PATH=$PATH:$HOME/android-sdk/cmdline-tools/latest/bin:$HOME/android-sdk/platform-tools" >> $GITHUB_ENV
-          
-          # 接受协议并安装你需要的组件
           yes | ~/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
           ~/android-sdk/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3"
+
+      - name: Grant execute permission to gradlew
+        run: chmod +x ./gradlew
 
       - name: Build APK
         run: ./gradlew assembleDebug --stacktrace
