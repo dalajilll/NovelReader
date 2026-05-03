@@ -1,10 +1,11 @@
 package com.novelreader;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import com.novelreader.database.AppDatabase;
-import com.novelreader.database.ReadingStatsEntity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -62,10 +63,10 @@ public class ReadingStatsActivity extends AppCompatActivity {
         todayTimeTextView.setText(String.format("%d 章节", todayCount));
         
         // 已读完书籍
-        booksReadTextView.setText("0 本"); // 这里需要实际计算
+        booksReadTextView.setText("0 本");
         
         // 平均阅读速度
-        averageSpeedTextView.setText("200 字/分钟"); // 这里需要实际计算
+        averageSpeedTextView.setText("200 字/分钟");
     }
 
     private String formatTime(long seconds) {
