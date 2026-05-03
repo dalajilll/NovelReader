@@ -59,15 +59,17 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="操作指南:\n\n"
-                + "1. 点击"选择文件"按钮\n"
-                + "2. 在弹出的文件选择器中选择一本小说\n"
-                + "3. 支持 .txt 和 .epub 格式\n"
-                + "4. 点击"开始导入"进行导入\n\n"
-                + "注意:\n"
-                + "-确保文件编码为UTF-8\n"
-                + "-系统会自动识别节\n"
-章                + "导-入后可在"书架"中查看"
+        android:text="操作指南:
+
+1. 点击选择文件按钮
+2. 在弹出的文件选择器中选择一本小说
+3. 支持 .txt 和 .epub 格式
+4. 点击开始导入进行导入
+
+注意:
+- 确保文件编码为UTF-8
+- 系统会自动识别章节
+- 导入后可在书架中查看"
         android:textSize="14sp"
         android:background="#F0F0F0"
         android:padding="16dp" />
