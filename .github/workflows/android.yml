@@ -15,6 +15,13 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
+      - name: Fix gradlew permissions and line endings
+        run: |
+          # 修复可执行权限
+          chmod +x ./gradlew
+          # 把 CRLF 换行符转为 Linux 的 LF
+          sed -i 's/\r$//' ./gradlew
+
       - name: Install Android SDK (Manual for API 30)
         run: |
           sudo apt update && sudo apt install -y wget unzip lib32stdc++6 lib32z1
@@ -27,9 +34,6 @@ jobs:
           echo "PATH=$PATH:$HOME/android-sdk/cmdline-tools/latest/bin:$HOME/android-sdk/platform-tools" >> $GITHUB_ENV
           yes | ~/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
           ~/android-sdk/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3"
-
-      - name: Grant execute permission to gradlew
-        run: chmod +x ./gradlew
 
       - name: Build APK
         run: ./gradlew assembleDebug --stacktrace
