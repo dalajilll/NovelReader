@@ -5,23 +5,24 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # 换成当前稳定的 Ubuntu 22.04 托管 Runner，资源充足
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up JDK 11
+      - name: Set up JDK 17  # 升级到兼容新版 SDK 的 JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
+          java-version: '17'
           distribution: 'temurin'
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
         with:
-          api-level: 30
-          build-tools: 30.0.3
-          platform-tools: latest
-          accept-licenses: true
+          accept-android-sdk-licenses: true
+          packages: |
+            platform-tools
+            platforms;android-30
+            build-tools;30.0.3
 
       - name: Build APK
         run: ./gradlew assembleDebug --stacktrace
