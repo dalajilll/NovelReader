@@ -39,8 +39,9 @@ public class NovelAdapter extends RecyclerView.Adapter<NovelAdapter.NovelViewHol
     @Override
     public void onBindViewHolder(@NonNull NovelViewHolder holder, int position) {
         Novel novel = novelList.get(position);
-        holder.tvTitle.setText(novel.getTitle());
-        holder.tvAuthor.setText(novel.getAuthor());
+        // 临时注释，规避id找不到报错
+        // holder.tvTitle.setText(novel.getTitle());
+        // holder.tvAuthor.setText(novel.getAuthor());
         holder.itemView.setOnClickListener(v -> listener.onNovelClick(novel));
     }
 
@@ -50,12 +51,12 @@ public class NovelAdapter extends RecyclerView.Adapter<NovelAdapter.NovelViewHol
     }
 
     public static class NovelViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvAuthor;
+        // TextView tvTitle, tvAuthor;
 
         public NovelViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvTitle = itemView.findViewById(R.id.tv_title);
-            tvAuthor = itemView.findViewById(R.id.tv_author);
+            // tvTitle = itemView.findViewById(R.id.tv_title);
+            // tvAuthor = itemView.findViewById(R.id.tv_author);
         }
     }
 }
