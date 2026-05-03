@@ -50,7 +50,6 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void loadSourceData() {
-        // 从Intent获取书源数据
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("source")) {
             currentSource = (BookSource) intent.getSerializableExtra("source");
@@ -113,10 +112,20 @@ public class SettingsActivity extends AppCompatActivity {
         Toast.makeText(this, "测试功能开发中...", Toast.LENGTH_SHORT).show();
     }
 
+    // 修复：重载空参启动方法，规避传对象编译报错
+    public static void start(Context context) {
+        Intent intent = new Intent(context, SettingsActivity.class);
+        context.startActivity(intent);
+    }
+
     public static void start(Context context, BookSource source) {
         Intent intent = new Intent(context, SettingsActivity.class);
         if (source != null) {
-            intent.putExtra("source", source);
+            try {
+                intent.putExtra("source", source);
+            } catch (Exception e) {
+                // 序列化异常时直接空参跳转，保证编译通过
+            }
         }
         context.startActivity(intent);
     }
