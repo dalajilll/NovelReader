@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04  # 用老版本系统，工具链更兼容老项目
+    runs-on: ubuntu-latest  # 换成当前稳定的 Ubuntu 22.04 托管 Runner，资源充足
     steps:
       - uses: actions/checkout@v4
 
@@ -15,16 +15,13 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      - name: Install Android SDK dependencies
-        run: |
-          sudo apt update && sudo apt install -y wget unzip lib32stdc++6 lib32z1
-          wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip -O /tmp/sdk-tools.zip
-          mkdir -p ~/android-sdk
-          unzip -q /tmp/sdk-tools.zip -d ~/android-sdk
-          echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
-          echo "PATH=$PATH:$HOME/android-sdk/tools:$HOME/android-sdk/platform-tools" >> $GITHUB_ENV
-          echo "y" | ~/android-sdk/tools/bin/sdkmanager --licenses
-          ~/android-sdk/tools/bin/sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3"
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          api-level: 30
+          build-tools: 30.0.3
+          platform-tools: latest
+          accept-licenses: true
 
       - name: Build APK
         run: ./gradlew assembleDebug --stacktrace
