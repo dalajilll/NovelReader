@@ -6,13 +6,11 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    // 关键：改成允许项目自己定义仓库，不再拦截
+    repositoriesMode.set(RepositoriesMode.ALLOW_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
-        // 如果有网络问题，可以添加国内镜像
-        // maven { url 'https://maven.aliyun.com/repository/google' }
-        // maven { url 'https://maven.aliyun.com/repository/jcenter' }
     }
 }
 
