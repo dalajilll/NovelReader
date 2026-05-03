@@ -124,7 +124,7 @@ public class BookshelfActivity extends AppCompatActivity {
         List<Novel> novels = new ArrayList<>();
         for (AppDatabase.NovelEntity entity : entities) {
             Novel novel = new Novel();
-            novel.setId(entity.id);
+            novel.setId(String.valueOf(entity.id));
             novel.setTitle(entity.title);
             novel.setAuthor(entity.author);
             novel.setDescription(entity.description);
