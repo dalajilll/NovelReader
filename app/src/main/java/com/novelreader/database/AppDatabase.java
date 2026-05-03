@@ -2,12 +2,10 @@ package com.novelreader.database;
 
 import androidx.room.*;
 import androidx.room.OnConflictStrategy;
-import android.content.Context;
-import java.util.Date;
 import java.util.List;
 
 @Entity(tableName = "novels")
-class NovelEntity {
+public class NovelEntity {
     @PrimaryKey
     public int id;
     public String title;
@@ -23,7 +21,7 @@ class NovelEntity {
 }
 
 @Entity(tableName = "chapters")
-class ChapterEntity {
+public class ChapterEntity {
     @PrimaryKey
     public int id;
     public int novelId;
@@ -34,7 +32,7 @@ class ChapterEntity {
 }
 
 @Entity(tableName = "bookmarks")
-class BookmarkEntity {
+public class BookmarkEntity {
     @PrimaryKey(autoGenerate = true)
     public int id;
     public int novelId;
@@ -45,7 +43,7 @@ class BookmarkEntity {
 }
 
 @Entity(tableName = "reading_stats")
-class ReadingStatsEntity {
+public class ReadingStatsEntity {
     @PrimaryKey
     public int novelId;
     public long totalReadingTime;
@@ -55,7 +53,7 @@ class ReadingStatsEntity {
 }
 
 @Dao
-interface NovelDao {
+public interface NovelDao {
     @Query("SELECT * FROM novels ORDER BY lastReadTime DESC")
     List<NovelEntity> getAllNovels();
     
@@ -79,7 +77,7 @@ interface NovelDao {
 }
 
 @Dao
-interface ChapterDao {
+public interface ChapterDao {
     @Query("SELECT * FROM chapters WHERE novelId = :novelId ORDER BY chapterIndex")
     List<ChapterEntity> getChaptersByNovel(int novelId);
     
@@ -97,7 +95,7 @@ interface ChapterDao {
 }
 
 @Dao
-interface BookmarkDao {
+public interface BookmarkDao {
     @Query("SELECT * FROM bookmarks WHERE novelId = :novelId ORDER BY createTime DESC")
     List<BookmarkEntity> getBookmarksByNovel(int novelId);
     
@@ -109,7 +107,7 @@ interface BookmarkDao {
 }
 
 @Dao
-interface ReadingStatsDao {
+public interface ReadingStatsDao {
     @Query("SELECT * FROM reading_stats WHERE novelId = :novelId")
     ReadingStatsEntity getStatsByNovel(int novelId);
     
@@ -149,7 +147,7 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 }
 
-class Converters {
+public class Converters {
     @TypeConverter
     public static String fromTimestamp(Long value) {
         return value == null ? null : new Date(value).toString();
