@@ -44,7 +44,7 @@ jobs:
           ~/android-sdk/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3"
 
       - name: Build APK
-        run: ./gradlew assembleDebug --stacktrace
+        run: ./gradlew assembleDebug --stacktrace -Dgradle.repositories.mode=PROJECT
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
