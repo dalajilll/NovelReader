@@ -19,18 +19,6 @@ jobs:
         run: |
           sudo apt update && sudo apt install -y wget unzip lib32stdc++6 lib32z1
 
-      - name: Download and use compatible Gradle to generate wrapper
-        run: |
-          # 下载和你项目兼容的 Gradle 7.0
-          wget https://services.gradle.org/distributions/gradle-7.0-bin.zip -O /tmp/gradle-7.0-bin.zip
-          unzip -q /tmp/gradle-7.0-bin.zip -d ~/gradle
-          export PATH=$HOME/gradle/gradle-7.0/bin:$PATH
-          # 用 Gradle 7.0 生成 wrapper，兼容 settings.gradle 语法
-          gradle wrapper --gradle-version 7.0
-          # 修复换行符和权限
-          sed -i 's/\r$//' ./gradlew
-          chmod +x ./gradlew
-
       - name: Install Android SDK
         run: |
           wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -O /tmp/cmdline-tools.zip
@@ -43,8 +31,13 @@ jobs:
           yes | ~/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
           ~/android-sdk/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3"
 
+      - name: Fix gradlew permission & line ending
+        run: |
+          sed -i 's/\r$//' ./gradlew
+          chmod +x ./gradlew
+
       - name: Build APK
-        run: gradle assembleDebug --stacktrace -Dgradle.repositories.mode=PROJECT --gradle-version 8.0
+        run: ./gradlew assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
