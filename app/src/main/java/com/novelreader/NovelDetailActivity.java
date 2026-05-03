@@ -12,8 +12,6 @@ import android.widget.*;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GestureDetectorCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import com.novelreader.model.Novel;
 import com.novelreader.tts.TTSManager;
 import java.util.ArrayList;
@@ -96,10 +94,8 @@ public class NovelDetailActivity extends AppCompatActivity {
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                 if (Math.abs(velocityX) > Math.abs(velocityY)) {
                     if (velocityX > 0) {
-                        // 向右滑动 - 上一页
                         previousPage();
                     } else {
-                        // 向左滑动 - 下一页
                         nextPage();
                     }
                     return true;
@@ -114,12 +110,10 @@ public class NovelDetailActivity extends AppCompatActivity {
     }
 
     private void loadNovelData() {
-        // 从Intent获取小说数据
         Intent intent = getIntent();
         if (intent != null) {
             currentNovel = (Novel) intent.getSerializableExtra("novel");
             if (currentNovel != null) {
-                // 模拟章节数据
                 generateMockChapters();
             }
         }
@@ -146,26 +140,14 @@ public class NovelDetailActivity extends AppCompatActivity {
     }
 
     private void setupClickListeners() {
-        // 菜单控制
         menuBtn.setOnClickListener(v -> toggleMenu());
-        
-        // 章节切换
         prevChapterBtn.setOnClickListener(v -> previousChapter());
         nextChapterBtn.setOnClickListener(v -> nextChapter());
-        
-        // TTS控制
         ttsBtn.setOnClickListener(v -> toggleTTS());
-        
-        // 设置档框
         findViewById(R.id.settingsBtn).setOnClickListener(v -> showSettingsDialog());
-        
-        // 目录按钮
         findViewById(R.id.chapterListBtn).setOnClickListener(v -> showChapterList());
-        
-        // 书签按钮
         findViewById(R.id.bookmarkBtn).setOnClickListener(v -> addBookmark());
-        
-        // 字体调节
+
         fontSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -176,7 +158,6 @@ public class NovelDetailActivity extends AppCompatActivity {
             @Override public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        // 亮度调节
         brightnessSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -192,13 +173,10 @@ public class NovelDetailActivity extends AppCompatActivity {
         float screenWidth = getResources().getDisplayMetrics().widthPixels;
         
         if (x < screenWidth * 0.3) {
-            // 点击左侧 - 上一页
             previousPage();
         } else if (x > screenWidth * 0.7) {
-            // 点击右侧 - 下一页
             nextPage();
         } else {
-            // 点击中间 - 显示/隐藏菜单
             toggleMenu();
         }
     }
@@ -206,22 +184,13 @@ public class NovelDetailActivity extends AppCompatActivity {
     private void toggleMenu() {
         isMenuVisible = !isMenuVisible;
         menuLayout.setVisibility(isMenuVisible ? View.VISIBLE : View.GONE);
-        
-        // 设置全屏模式
-        if (isMenuVisible) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        } else {
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
     }
 
     private void previousPage() {
-        // 实现分页逻辑
         Toast.makeText(this, "上一页", Toast.LENGTH_SHORT).show();
     }
 
     private void nextPage() {
-        // 实现分页逻辑
         Toast.makeText(this, "下一页", Toast.LENGTH_SHORT).show();
     }
 
@@ -256,26 +225,20 @@ public class NovelDetailActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_reading_settings, null);
         
-        // 设置选项
         RadioGroup themeGroup = dialogView.findViewById(R.id.themeGroup);
         SeekBar lineSpacingSeekBar = dialogView.findViewById(R.id.lineSpacingSeekBar);
-        
-        // 主题选择
+
+        // 重点修复：把switch换成if判断，避开R.id常量报错
         themeGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            switch (checkedId) {
-                case R.id.dayModeRadio:
-                    setTheme(Color.WHITE, Color.BLACK);
-                    break;
-                case R.id.nightModeRadio:
-                    setTheme(Color.BLACK, Color.WHITE);
-                    break;
-                case R.id.eyeModeRadio:
-                    setTheme(0xFFF5F5DC, Color.BLACK); // 护眼色
-                    break;
+            if(checkedId == R.id.dayModeRadio){
+                setTheme(Color.WHITE, Color.BLACK);
+            }else if(checkedId == R.id.nightModeRadio){
+                setTheme(Color.BLACK, Color.WHITE);
+            }else if(checkedId == R.id.eyeModeRadio){
+                setTheme(0xFFF5F5DC, Color.BLACK);
             }
         });
-        
-        // 行距调节
+
         lineSpacingSeekBar.setProgress((int) ((lineSpacing - 1.0f) * 10));
         lineSpacingSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -333,7 +296,6 @@ public class NovelDetailActivity extends AppCompatActivity {
             contentTextView.setText(chapters.get(currentChapterIndex));
             progressTextView.setText(String.format("%d/%d", currentChapterIndex + 1, chapters.size()));
             
-            // 更新按钮状态
             prevChapterBtn.setEnabled(currentChapterIndex > 0);
             nextChapterBtn.setEnabled(currentChapterIndex < chapters.size() - 1);
         }
@@ -385,7 +347,6 @@ public class NovelDetailActivity extends AppCompatActivity {
         saveSettings();
     }
 
-    // 启动方法
     public static void start(Context context, Novel novel) {
         Intent intent = new Intent(context, NovelDetailActivity.class);
         intent.putExtra("novel", novel);
